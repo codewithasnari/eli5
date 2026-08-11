@@ -11,5 +11,18 @@
   "license": "MIT",
   "keywords": ["eli5", "explain", "simplify", "plain-language"],
   "skills": "./skills/",
-  "hooks": "./hooks/codex-hooks.json"
+  "interface": {
+    "displayName": "ELI5",
+    "shortDescription": "Explain complex things simply",
+    "longDescription": "Turn code, errors, and complex concepts into short, jargon-free explanations with everyday analogies.",
+    "developerName": "Asnari Pacalna",
+    "category": "Productivity",
+    "capabilities": ["Skills"],
+    "websiteURL": "https://github.com/Kyaa-A/eli5",
+    "defaultPrompt": [
+      "Explain this like I'm five.",
+      "Make the previous answer simpler.",
+      "Explain this error in plain language."
+    ]
+  }
 }

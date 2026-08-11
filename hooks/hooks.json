@@ -6,7 +6,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/check-update.mjs\" --platform claude --root \"${CLAUDE_PLUGIN_ROOT}\" --data \"${CLAUDE_PLUGIN_DATA}\"",
+            "command": "if [ -n \"${CLAUDE_PLUGIN_ROOT:-}\" ]; then platform=claude; root=\"$CLAUDE_PLUGIN_ROOT\"; data=\"$CLAUDE_PLUGIN_DATA\"; else platform=codex; root=\"$PLUGIN_ROOT\"; data=\"$PLUGIN_DATA\"; fi; node \"$root/scripts/check-update.mjs\" --platform \"$platform\" --root \"$root\" --data \"$data\"",
+            "commandWindows": "$platform = if ($env:CLAUDE_PLUGIN_ROOT) { 'claude' } else { 'codex' }; $root = if ($env:CLAUDE_PLUGIN_ROOT) { $env:CLAUDE_PLUGIN_ROOT } else { $env:PLUGIN_ROOT }; $data = if ($env:CLAUDE_PLUGIN_ROOT) { $env:CLAUDE_PLUGIN_DATA } else { $env:PLUGIN_DATA }; node \"$root\\scripts\\check-update.mjs\" --platform $platform --root $root --data $data",
             "timeout": 5,
             "statusMessage": "Checking eli5 version"
           }

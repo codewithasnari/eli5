@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { readFile, mkdir, mkdtemp, readdir, stat, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
@@ -45,18 +45,41 @@ test('skill is preserved byte-for-byte', async () => {
 });
 
 test('manifests align at v0.1.0 and hooks follow each host contract', async () => {
-  const paths = ['package.json', '.claude-plugin/plugin.json', '.claude-plugin/marketplace.json', '.codex-plugin/plugin.json', '.agents/plugins/marketplace.json', 'hooks/hooks.json', 'hooks/codex-hooks.json'];
+  const paths = ['package.json', '.claude-plugin/plugin.json', '.claude-plugin/marketplace.json', '.codex-plugin/plugin.json', '.agents/plugins/marketplace.json', 'hooks/hooks.json'];
   const docs = Object.fromEntries(await Promise.all(paths.map(async (path) => [path, JSON.parse(await readFile(join(repoRoot, path), 'utf8'))])));
   assert.equal(docs['package.json'].version, '0.1.0');
   assert.equal(docs['.claude-plugin/plugin.json'].version, '0.1.0');
   assert.equal(docs['.claude-plugin/plugin.json'].hooks, undefined);
   assert.equal(docs['.codex-plugin/plugin.json'].version, '0.1.0');
-  assert.equal(docs['.codex-plugin/plugin.json'].hooks, './hooks/codex-hooks.json');
+  assert.equal(docs['.codex-plugin/plugin.json'].hooks, undefined);
+  assert.equal(docs['.codex-plugin/plugin.json'].interface.displayName, 'ELI5');
+  assert.ok(docs['.codex-plugin/plugin.json'].interface.capabilities.includes('Skills'));
+  assert.equal(docs['.agents/plugins/marketplace.json'].interface.displayName, 'ELI5');
   assert.equal(docs['.agents/plugins/marketplace.json'].plugins[0].version, '0.1.0');
-  assert.match(docs['hooks/hooks.json'].hooks.SessionStart[0].hooks[0].command, /CLAUDE_PLUGIN_ROOT/);
-  assert.match(docs['hooks/hooks.json'].hooks.SessionStart[0].hooks[0].command, /CLAUDE_PLUGIN_DATA/);
-  assert.match(docs['hooks/codex-hooks.json'].hooks.SessionStart[0].hooks[0].command, /\$PLUGIN_ROOT/);
-  assert.match(docs['hooks/codex-hooks.json'].hooks.SessionStart[0].hooks[0].commandWindows, /\$env:PLUGIN_ROOT/);
+  assert.deepEqual(docs['.agents/plugins/marketplace.json'].plugins[0].policy, { installation: 'AVAILABLE', authentication: 'ON_INSTALL' });
+  const hook = docs['hooks/hooks.json'].hooks.SessionStart[0].hooks[0];
+  assert.match(hook.command, /CLAUDE_PLUGIN_ROOT/);
+  assert.match(hook.command, /CLAUDE_PLUGIN_DATA/);
+  assert.match(hook.command, /PLUGIN_ROOT/);
+  assert.match(hook.command, /PLUGIN_DATA/);
+  assert.match(hook.commandWindows, /CLAUDE_PLUGIN_ROOT/);
+  assert.match(hook.commandWindows, /PLUGIN_ROOT/);
+});
+
+test('auto-discovered POSIX hook selects the active host environment', async () => {
+  const hooks = JSON.parse(await readFile(join(repoRoot, 'hooks/hooks.json'), 'utf8'));
+  const command = hooks.hooks.SessionStart[0].hooks[0].command;
+  for (const [platform, env] of [
+    ['claude', { CLAUDE_PLUGIN_ROOT: '/tmp/Claude Root', CLAUDE_PLUGIN_DATA: '/tmp/Claude Data' }],
+    ['codex', { PLUGIN_ROOT: '/tmp/Codex Root', PLUGIN_DATA: '/tmp/Codex Data' }],
+  ]) {
+    const script = `node() { printf '%s\\n' "$@"; }; ${command}`;
+    const result = spawnSync('sh', ['-c', script], { env: { PATH: process.env.PATH, ...env }, encoding: 'utf8' });
+    assert.equal(result.status, 0, result.stderr);
+    const root = platform === 'claude' ? env.CLAUDE_PLUGIN_ROOT : env.PLUGIN_ROOT;
+    const data = platform === 'claude' ? env.CLAUDE_PLUGIN_DATA : env.PLUGIN_DATA;
+    assert.deepEqual(result.stdout.trim().split('\n'), [`${root}/scripts/check-update.mjs`, '--platform', platform, '--root', root, '--data', data]);
+  }
 });
 
 for (const platform of ['claude', 'codex']) {
