@@ -72,9 +72,16 @@ Start a new Codex session and review/trust the hook again if prompted. Set `ELI5
 
 Requires Node.js 20 or newer.
 
+The skill stays Markdown-first: `skills/eli5/SKILL.md` defines the behavior, while a small dependency-free JavaScript updater provides managed-install notices. TypeScript would add a build step without improving this narrow runtime.
+
 ```bash
+npm ci
 npm test
+npm run validate
+npm pack --dry-run
 ```
+
+CI runs the same checks on pushes and pull requests. GitHub Actions are allowlisted, pinned to full commit SHAs, and kept current through weekly Dependabot updates.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidance and [SECURITY.md](SECURITY.md) for private vulnerability reporting.
 

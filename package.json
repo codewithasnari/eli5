@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "validate": "node scripts/validate-repo.mjs"
   },
   "engines": {
     "node": ">=20"
