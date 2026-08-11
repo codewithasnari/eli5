@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use eli5, please cite it using this metadata."
+title: eli5
+abstract: "A Claude Code and Codex skill for short, jargon-free explanations of code, errors, and complex concepts."
+type: software
+version: 0.1.0
+authors:
+  - family-names: Pacalna
+    given-names: Asnari
+    alias: Kyaa-A
+repository-code: "https://github.com/Kyaa-A/eli5"
+url: "https://github.com/Kyaa-A/eli5"
+license: MIT
+keywords:
+  - claude-code
+  - codex
+  - skill
+  - eli5
+  - plain-language
