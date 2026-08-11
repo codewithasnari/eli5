@@ -1,22 +1,23 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { cp, mkdtemp, readFile, writeFile } from 'node:fs/promises';
+import { cp, mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import test from 'node:test';
+import { assertSafeWorkflows } from '../scripts/ci-policy.mjs';
 
-const workflowPath = resolve(import.meta.dirname, '../.github/workflows/ci.yml');
-const allowedActions = new Set(['actions/checkout', 'actions/setup-node']);
+const sha = '1'.repeat(40);
 
-test('CI uses only allowlisted actions pinned to full commit SHAs', async () => {
-  const workflow = await readFile(workflowPath, 'utf8');
-  const uses = [...workflow.matchAll(/^\s*- uses:\s*([^\s@]+)@([^\s#]+)/gm)];
+test('repository workflows satisfy CI policy', async () => assertSafeWorkflows(resolve(import.meta.dirname, '..')));
 
-  assert.ok(uses.length > 0, 'CI must use at least one GitHub Action');
-  for (const [, action, revision] of uses) {
-    assert.ok(allowedActions.has(action), `${action} is not allowlisted`);
-    assert.match(revision, /^[0-9a-f]{40}$/, `${action} must use a full 40-character commit SHA`);
-  }
+test('CI policy scans all workflow YAML syntax and files', async () => {
+  const root = await mkdtemp(resolve(tmpdir(), 'eli5-ci-'));
+  await mkdir(resolve(root, '.github/workflows'), { recursive: true });
+  await writeFile(resolve(root, '.github/workflows/ci.yml'), `steps:\n  - uses: actions/checkout@${sha}\n`);
+  await writeFile(resolve(root, '.github/workflows/extra.yaml'), `steps:\n  - { "uses": actions/setup-node@${sha} }\n`);
+  await assertSafeWorkflows(root);
+  await writeFile(resolve(root, '.github/workflows/extra.yaml'), `jobs:\n  attack:\n    "uses": evil/action@${sha}\n`);
+  await assert.rejects(assertSafeWorkflows(root));
 });
 
 test('repository metadata validator accepts the packaged plugin', () => {
@@ -49,6 +50,16 @@ test('repository metadata validator rejects inconsistent package identity', asyn
   await rejectMutation('CITATION.cff', (source) => source.replace('version: 0.1.3', 'version: 9.9.9'));
   await rejectMutation('CITATION.cff', (source) => source.replace('github.com/Kyaa-A/eli5', 'github.com/other/eli5'));
   await rejectMutation('.claude-plugin/marketplace.json', (source) => source.replace('"plugins": [\n    {\n      "name": "eli5"', '"plugins": [\n    {\n      "name": "other"'));
+  await rejectMutation('.claude-plugin/marketplace.json', (source) => {
+    const document = JSON.parse(source);
+    document.plugins.push({ ...document.plugins[0], name: 'other' });
+    return JSON.stringify(document);
+  });
+  await rejectMutation('.agents/plugins/marketplace.json', (source) => {
+    const document = JSON.parse(source);
+    document.plugins.push({ ...document.plugins[0], name: 'other' });
+    return JSON.stringify(document);
+  });
 });
 
 test('repository metadata validator rejects unsafe hook metadata', async () => {

@@ -38,6 +38,8 @@ for (const [name, candidate] of [
 }
 assert.equal(claudeMarketplace.name, 'eli5');
 assert.equal(agentsMarketplace.name, 'eli5');
+assert.equal(claudeMarketplace.plugins.length, 1);
+assert.equal(agentsMarketplace.plugins.length, 1);
 assert.deepEqual(agentsMarketplace.plugins[0].policy, { installation: 'AVAILABLE', authentication: 'ON_INSTALL' });
 
 const hook = hooks.hooks.SessionStart[0];
