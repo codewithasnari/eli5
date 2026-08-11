@@ -9,7 +9,7 @@ import test from 'node:test';
 const repoRoot = resolve(import.meta.dirname, '..');
 const checker = join(repoRoot, 'scripts/check-update.mjs');
 
-async function fixture(platform = 'claude', version = '0.1.0') {
+async function fixture(platform = 'claude', version = '0.1.1') {
   const root = await mkdtemp(join(tmpdir(), 'eli5-plugin-'));
   const data = await mkdtemp(join(tmpdir(), 'eli5-data-'));
   const manifestDir = platform === 'claude' ? '.claude-plugin' : '.codex-plugin';
@@ -44,18 +44,18 @@ test('skill is preserved byte-for-byte', async () => {
   assert.deepEqual(packaged, original);
 });
 
-test('manifests align at v0.1.0 and hooks follow each host contract', async () => {
+test('manifests align at v0.1.1 and hooks follow each host contract', async () => {
   const paths = ['package.json', '.claude-plugin/plugin.json', '.claude-plugin/marketplace.json', '.codex-plugin/plugin.json', '.agents/plugins/marketplace.json', 'hooks/hooks.json'];
   const docs = Object.fromEntries(await Promise.all(paths.map(async (path) => [path, JSON.parse(await readFile(join(repoRoot, path), 'utf8'))])));
-  assert.equal(docs['package.json'].version, '0.1.0');
-  assert.equal(docs['.claude-plugin/plugin.json'].version, '0.1.0');
+  assert.equal(docs['package.json'].version, '0.1.1');
+  assert.equal(docs['.claude-plugin/plugin.json'].version, '0.1.1');
   assert.equal(docs['.claude-plugin/plugin.json'].hooks, undefined);
-  assert.equal(docs['.codex-plugin/plugin.json'].version, '0.1.0');
+  assert.equal(docs['.codex-plugin/plugin.json'].version, '0.1.1');
   assert.equal(docs['.codex-plugin/plugin.json'].hooks, undefined);
   assert.equal(docs['.codex-plugin/plugin.json'].interface.displayName, 'ELI5');
   assert.ok(docs['.codex-plugin/plugin.json'].interface.capabilities.includes('Skills'));
   assert.equal(docs['.agents/plugins/marketplace.json'].interface.displayName, 'ELI5');
-  assert.equal(docs['.agents/plugins/marketplace.json'].plugins[0].version, '0.1.0');
+  assert.equal(docs['.agents/plugins/marketplace.json'].plugins[0].version, '0.1.1');
   assert.deepEqual(docs['.agents/plugins/marketplace.json'].plugins[0].policy, { installation: 'AVAILABLE', authentication: 'ON_INSTALL' });
   const hook = docs['hooks/hooks.json'].hooks.SessionStart[0].hooks[0];
   assert.match(hook.command, /CLAUDE_PLUGIN_ROOT/);
@@ -93,7 +93,7 @@ for (const platform of ['claude', 'codex']) {
       const output = JSON.parse(result.stdout);
       assert.equal(output.continue, true);
       assert.equal('additionalContext' in output, false);
-      assert.match(output.systemMessage, /eli5 0\.1\.0.*0\.2\.0/s);
+      assert.match(output.systemMessage, /eli5 0\.1\.1.*0\.2\.0/s);
       assert.match(output.systemMessage, platform === 'claude' ? /claude plugin update eli5@eli5/ : /codex plugin add eli5@eli5/);
       assert.doesNotMatch(result.stdout, /127\.0\.0\.1|manifest\.json|token/i);
     } finally { await remote.close(); }
@@ -103,7 +103,7 @@ for (const platform of ['claude', 'codex']) {
 test('equal versions are silent and successful checks are cached securely', async () => {
   const { root, data } = await fixture();
   let requests = 0;
-  const remote = await serve((_req, res) => { requests += 1; res.end(JSON.stringify({ name: 'eli5', version: '0.1.0' })); });
+  const remote = await serve((_req, res) => { requests += 1; res.end(JSON.stringify({ name: 'eli5', version: '0.1.1' })); });
   try {
     assert.deepEqual(await run({ root, data, url: remote.url }), { code: 0, stdout: '', stderr: '' });
     assert.deepEqual(await run({ root, data, url: remote.url }), { code: 0, stdout: '', stderr: '' });
@@ -133,7 +133,7 @@ test('network, HTTP, JSON, schema, and semver failures are silent', async () => 
 test('checker never writes in the plugin root', async () => {
   const { root, data } = await fixture();
   const before = await readdir(root, { recursive: true });
-  const remote = await serve((_req, res) => res.end(JSON.stringify({ name: 'eli5', version: '0.1.0' })));
+  const remote = await serve((_req, res) => res.end(JSON.stringify({ name: 'eli5', version: '0.1.1' })));
   try {
     await run({ root, data, url: remote.url });
     assert.deepEqual(await readdir(root, { recursive: true }), before);

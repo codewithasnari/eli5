@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "eli5",
   "description": "Explain code, errors, and complex concepts in clear, jargon-free language.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "Asnari Pacalna",
     "url": "https://github.com/Kyaa-A"
