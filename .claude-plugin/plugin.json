@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "eli5",
+  "description": "Explain code, errors, and complex concepts in clear, jargon-free language.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Asnari Pacalna",
+    "url": "https://github.com/Kyaa-A"
+  },
+  "homepage": "https://github.com/Kyaa-A/eli5",
+  "repository": "https://github.com/Kyaa-A/eli5",
+  "license": "MIT",
+  "keywords": ["eli5", "explain", "simplify", "plain-language", "claude-code", "codex"]
+}

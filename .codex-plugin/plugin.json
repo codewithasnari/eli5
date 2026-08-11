@@ -1,0 +1,15 @@
+{
+  "name": "eli5",
+  "version": "0.1.0",
+  "description": "Explain code, errors, and complex concepts in clear, jargon-free language.",
+  "author": {
+    "name": "Asnari Pacalna",
+    "url": "https://github.com/Kyaa-A"
+  },
+  "homepage": "https://github.com/Kyaa-A/eli5",
+  "repository": "https://github.com/Kyaa-A/eli5",
+  "license": "MIT",
+  "keywords": ["eli5", "explain", "simplify", "plain-language"],
+  "skills": "./skills/",
+  "hooks": "./hooks/codex-hooks.json"
+}

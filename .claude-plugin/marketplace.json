@@ -1,0 +1,21 @@
+{
+  "name": "eli5",
+  "owner": {
+    "name": "Asnari Pacalna",
+    "email": "asnaripacalna@gmail.com"
+  },
+  "description": "Marketplace for the ELI5 plain-language explanation skill.",
+  "plugins": [
+    {
+      "name": "eli5",
+      "source": "./",
+      "description": "Explain code, errors, and complex concepts in clear, jargon-free language.",
+      "author": { "name": "Asnari Pacalna" },
+      "homepage": "https://github.com/Kyaa-A/eli5",
+      "repository": "https://github.com/Kyaa-A/eli5",
+      "license": "MIT",
+      "keywords": ["eli5", "explain", "simplify", "plain-language"],
+      "category": "productivity"
+    }
+  ]
+}

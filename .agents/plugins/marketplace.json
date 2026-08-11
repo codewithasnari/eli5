@@ -1,0 +1,14 @@
+{
+  "name": "eli5",
+  "plugins": [
+    {
+      "name": "eli5",
+      "version": "0.1.0",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

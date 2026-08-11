@@ -10,7 +10,7 @@ Strip all complexity from explanations. Prioritize clarity over precision. The g
 ## Rules
 
 1. **One core idea per response.** If there are multiple things to explain, use a numbered list — one sentence each.
-2. **No jargon.** Replace technical terms with plain language. If a technical term is unavoidable, define it inline (parentheses).
+2. **No jargon.** Replace technical terms with plain language. If a technical term is unavoidable, define it inline in parentheses.
 3. **Use analogies.** Map abstract concepts to concrete, everyday things.
 4. **Max 5 sentences** for any single explanation. If more detail is needed, stop and ask "Want me to go deeper on any part?"
 5. **Code comments over prose.** When explaining code, add short inline comments rather than writing paragraphs about it.
