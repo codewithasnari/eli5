@@ -56,6 +56,21 @@ test('repository metadata validator rejects unsafe hook metadata', async () => {
   await rejectMutation('.agents/plugins/marketplace.json', (source) => source.replace('"AVAILABLE"', '"BLOCKED"'));
 });
 
+test('repository metadata validator requires explicit Codex hook fallbacks', async () => {
+  await rejectMutation('hooks/hooks.json', (source) => {
+    const document = JSON.parse(source);
+    const hook = document.hooks.SessionStart[0].hooks[0];
+    hook.command = hook.command.replace('root="$PLUGIN_ROOT"', 'root="$CLAUDE_PLUGIN_ROOT"');
+    return JSON.stringify(document);
+  });
+  await rejectMutation('hooks/hooks.json', (source) => {
+    const document = JSON.parse(source);
+    const hook = document.hooks.SessionStart[0].hooks[0];
+    hook.commandWindows = hook.commandWindows.replace('$env:PLUGIN_ROOT', '$env:CLAUDE_PLUGIN_ROOT');
+    return JSON.stringify(document);
+  });
+});
+
 test('repository metadata validator rejects SemVer leading zeros', async () => {
   const paths = ['package.json', 'package-lock.json', '.claude-plugin/plugin.json', '.claude-plugin/marketplace.json', '.codex-plugin/plugin.json', '.agents/plugins/marketplace.json', 'CITATION.cff'];
   await rejectMutations(paths.map((path) => [path, (source) => source.replaceAll('0.1.2', '01.1.2')]));
