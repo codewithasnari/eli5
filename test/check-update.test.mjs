@@ -44,18 +44,18 @@ test('skill is preserved byte-for-byte', async () => {
   assert.deepEqual(packaged, original);
 });
 
-test('manifests align at v0.1.3 and hooks follow each host contract', async () => {
+test('manifests align at v0.1.4 and hooks follow each host contract', async () => {
   const paths = ['package.json', '.claude-plugin/plugin.json', '.claude-plugin/marketplace.json', '.codex-plugin/plugin.json', '.agents/plugins/marketplace.json', 'hooks/hooks.json'];
   const docs = Object.fromEntries(await Promise.all(paths.map(async (path) => [path, JSON.parse(await readFile(join(repoRoot, path), 'utf8'))])));
-  assert.equal(docs['package.json'].version, '0.1.3');
-  assert.equal(docs['.claude-plugin/plugin.json'].version, '0.1.3');
+  assert.equal(docs['package.json'].version, '0.1.4');
+  assert.equal(docs['.claude-plugin/plugin.json'].version, '0.1.4');
   assert.equal(docs['.claude-plugin/plugin.json'].hooks, undefined);
-  assert.equal(docs['.codex-plugin/plugin.json'].version, '0.1.3');
+  assert.equal(docs['.codex-plugin/plugin.json'].version, '0.1.4');
   assert.equal(docs['.codex-plugin/plugin.json'].hooks, undefined);
   assert.equal(docs['.codex-plugin/plugin.json'].interface.displayName, 'ELI5');
   assert.ok(docs['.codex-plugin/plugin.json'].interface.capabilities.includes('Skills'));
   assert.equal(docs['.agents/plugins/marketplace.json'].interface.displayName, 'ELI5');
-  assert.equal(docs['.agents/plugins/marketplace.json'].plugins[0].version, '0.1.3');
+  assert.equal(docs['.agents/plugins/marketplace.json'].plugins[0].version, '0.1.4');
   assert.deepEqual(docs['.agents/plugins/marketplace.json'].plugins[0].policy, { installation: 'AVAILABLE', authentication: 'ON_INSTALL' });
   const hook = docs['hooks/hooks.json'].hooks.SessionStart[0].hooks[0];
   assert.match(hook.command, /CLAUDE_PLUGIN_ROOT/);
