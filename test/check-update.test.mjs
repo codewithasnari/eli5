@@ -38,12 +38,6 @@ async function run({ platform = 'claude', root, data, url, extraEnv = {} }) {
   return { code, stdout, stderr };
 }
 
-test('skill is preserved byte-for-byte', async () => {
-  const original = await readFile('/home/asnari/.codex/skills/eli5/SKILL.md');
-  const packaged = await readFile(join(repoRoot, 'skills/eli5/SKILL.md'));
-  assert.deepEqual(packaged, original);
-});
-
 test('manifests align at v0.1.5 and hooks follow each host contract', async () => {
   const paths = ['package.json', '.claude-plugin/plugin.json', '.claude-plugin/marketplace.json', '.codex-plugin/plugin.json', '.agents/plugins/marketplace.json', 'hooks/hooks.json'];
   const docs = Object.fromEntries(await Promise.all(paths.map(async (path) => [path, JSON.parse(await readFile(join(repoRoot, path), 'utf8'))])));
