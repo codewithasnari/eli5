@@ -81,6 +81,8 @@ npm run validate
 npm pack --dry-run
 ```
 
+Behavioral evaluations in `evals/evals.json` cover concepts, errors, code, context-only invocation, and security-sensitive precision.
+
 CI runs the same checks on pushes and pull requests. GitHub Actions are allowlisted, pinned to full commit SHAs, and kept current through weekly Dependabot updates.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidance and [SECURITY.md](SECURITY.md) for private vulnerability reporting.

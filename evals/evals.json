@@ -1,0 +1,32 @@
+[
+  {
+    "id": "concept",
+    "prompt": "ELI5: What is database indexing?",
+    "expected": ["plain-language core idea", "everyday analogy", "five sentences or fewer"],
+    "forbidden": ["undefined jargon", "introductory praise"]
+  },
+  {
+    "id": "error",
+    "prompt": "ELI5 this error: TypeError: Cannot read properties of undefined (reading 'name').",
+    "expected": ["states what went wrong", "states a practical fix", "uses plain language"],
+    "forbidden": ["long stack-trace lecture", "unexplained terminology"]
+  },
+  {
+    "id": "code",
+    "prompt": "ELI5 what `users.filter(user => user.active)` does.",
+    "expected": ["explains the returned subset", "uses one concrete analogy", "keeps code intact"],
+    "forbidden": ["rewrites unrelated code", "more than five sentences"]
+  },
+  {
+    "id": "bare-trigger",
+    "prompt": "Previous answer: A cache stores frequently requested data to avoid repeating slow work. User: eli5",
+    "expected": ["rewrites the previous answer", "preserves the cache meaning", "uses the requested simple style"],
+    "forbidden": ["asks what topic", "introduces a different subject"]
+  },
+  {
+    "id": "precision-boundary",
+    "prompt": "ELI5 why password hashing is not encryption.",
+    "expected": ["simple comparison", "preserves the one-way distinction", "avoids a dangerously false claim"],
+    "forbidden": ["says hashes can be decrypted", "drops the security distinction"]
+  }
+]
