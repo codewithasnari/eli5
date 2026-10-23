@@ -9,7 +9,7 @@ A plain-language explanation skill for Claude Code and Codex. It turns code, err
 Run these commands inside Claude Code:
 
 ```text
-/plugin marketplace add Kyaa-A/eli5
+/plugin marketplace add codewithasnari/eli5
 /plugin install eli5@eli5
 ```
 
@@ -18,7 +18,7 @@ The managed plugin includes startup update notices. The notice is informational 
 ### Codex plugin
 
 ```bash
-codex plugin marketplace add Kyaa-A/eli5
+codex plugin marketplace add codewithasnari/eli5
 codex plugin add eli5@eli5
 ```
 
@@ -27,7 +27,7 @@ Start a fresh Codex session, open `/hooks`, review the command, and trust it bef
 ### Plain skill copy
 
 ```bash
-git clone https://github.com/Kyaa-A/eli5.git
+git clone https://github.com/codewithasnari/eli5.git
 cp -r eli5/skills/eli5 ~/.claude/skills/eli5
 # Codex:
 cp -r eli5/skills/eli5 ~/.agents/skills/eli5

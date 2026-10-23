@@ -7,14 +7,14 @@ import { join } from 'node:path';
 const CONFIG = {
   claude: {
     manifest: '.claude-plugin/plugin.json',
-    remote: 'https://raw.githubusercontent.com/Kyaa-A/eli5/main/.claude-plugin/plugin.json',
+    remote: 'https://raw.githubusercontent.com/codewithasnari/eli5/main/.claude-plugin/plugin.json',
     message(installed, latest) {
       return `eli5 ${installed} -> ${latest} update available\nRun:\n  claude plugin marketplace update eli5\n  claude plugin update eli5@eli5\nThen restart Claude Code or run /reload-plugins.`;
     },
   },
   codex: {
     manifest: '.codex-plugin/plugin.json',
-    remote: 'https://raw.githubusercontent.com/Kyaa-A/eli5/main/.codex-plugin/plugin.json',
+    remote: 'https://raw.githubusercontent.com/codewithasnari/eli5/main/.codex-plugin/plugin.json',
     message(installed, latest) {
       return `eli5 ${installed} -> ${latest} update available\nRun:\n  codex plugin marketplace upgrade eli5\n  codex plugin remove eli5@eli5\n  codex plugin add eli5@eli5\nThen start a new Codex session.`;
     },

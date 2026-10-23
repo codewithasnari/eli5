@@ -4,10 +4,10 @@
   "description": "Explain code, errors, and complex concepts in clear, jargon-free language.",
   "author": {
     "name": "Asnari Pacalna",
-    "url": "https://github.com/Kyaa-A"
+    "url": "https://github.com/codewithasnari"
   },
-  "homepage": "https://github.com/Kyaa-A/eli5",
-  "repository": "https://github.com/Kyaa-A/eli5",
+  "homepage": "https://github.com/codewithasnari/eli5",
+  "repository": "https://github.com/codewithasnari/eli5",
   "license": "MIT",
   "keywords": ["eli5", "explain", "simplify", "plain-language"],
   "skills": "./skills/",
@@ -18,7 +18,7 @@
     "developerName": "Asnari Pacalna",
     "category": "Productivity",
     "capabilities": ["Skills"],
-    "websiteURL": "https://github.com/Kyaa-A/eli5",
+    "websiteURL": "https://github.com/codewithasnari/eli5",
     "defaultPrompt": [
       "Explain this like I'm five.",
       "Make the previous answer simpler.",

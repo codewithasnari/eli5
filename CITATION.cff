@@ -7,9 +7,9 @@ version: 0.1.5
 authors:
   - family-names: Pacalna
     given-names: Asnari
-    alias: Kyaa-A
-repository-code: "https://github.com/Kyaa-A/eli5"
-url: "https://github.com/Kyaa-A/eli5"
+    alias: codewithasnari
+repository-code: "https://github.com/codewithasnari/eli5"
+url: "https://github.com/codewithasnari/eli5"
 license: MIT
 keywords:
   - claude-code

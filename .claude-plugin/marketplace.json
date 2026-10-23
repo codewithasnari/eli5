@@ -12,8 +12,8 @@
       "source": "./",
       "description": "Explain code, errors, and complex concepts in clear, jargon-free language.",
       "author": { "name": "Asnari Pacalna" },
-      "homepage": "https://github.com/Kyaa-A/eli5",
-      "repository": "https://github.com/Kyaa-A/eli5",
+      "homepage": "https://github.com/codewithasnari/eli5",
+      "repository": "https://github.com/codewithasnari/eli5",
       "license": "MIT",
       "keywords": ["eli5", "explain", "simplify", "plain-language"],
       "category": "productivity"
